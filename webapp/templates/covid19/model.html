@@ -1,0 +1,29 @@
+
+
+{% extends "layout.html" %}
+
+{% block pagestyles %}
+
+<!-- Our own styles -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col">
+            <h5>Covid19 model built with Apache Spark</h5>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="/vismod/all" type="button" class="btn btn-secondary">all</a>
+                <a href="/vismod/Portugal" type="button" class="btn btn-secondary">Portugal</a>
+                <a href="/vismod/Spain" type="button" class="btn btn-secondary">Spain</a>
+                <a href="/vismod/France" type="button" class="btn btn-secondary">France</a>
+                <a href="/vismod/Italy" type="button" class="btn btn-secondary">Italy</a>
+                <a href="/vismod/Germany" type="button" class="btn btn-secondary">Germany</a>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
