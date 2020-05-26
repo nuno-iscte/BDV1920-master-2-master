@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  
+
+<script src="{{ url_for('static', filename='js/concelhos.js') }}"></script>
 <style>
     #mapid { 
         height: 700px; 
@@ -33,11 +34,14 @@
     var mymap = L.map('mapid').setView([39.557191, -7.8536599], 7);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    accessToken: 'pk.eyJ1Ijoibm1zZmMiLCJhIjoiY2thbzJodHR3MGFoaDJybnljdzBjMGp5OCJ9.-oHCyTvi5R5F1ygtGFAH8w'
-}).addTo(mymap);
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/light-v9',
+        accessToken: 'pk.eyJ1Ijoibm1zZmMiLCJhIjoiY2thbzJodHR3MGFoaDJybnljdzBjMGp5OCJ9.-oHCyTvi5R5F1ygtGFAH8w'
+    }).addTo(mymap);
+
+    var geojson = L.geoJson(concelhosData).addTo(mymap);
+
 </script>
 
 {% endblock %}
