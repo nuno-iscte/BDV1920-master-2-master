@@ -31,8 +31,8 @@ def home():
 							template='home-template'
 						)
 
-@app.route('/teste', methods=['GET'])
-def model():
+@app.route('/maps', methods=['GET'])
+def maps():
     # create model
 	logger.info(" ROUTE: Create model")
 	global spark, datasource, model
@@ -43,7 +43,7 @@ def model():
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
-							template='model-template'
+							template='maps-template'
 						)
 
    

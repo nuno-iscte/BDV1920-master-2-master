@@ -32,8 +32,6 @@
 
 <script>
     var mymap = L.map('mapid').setView([39.557191, -7.8536599], 7);
-    
-    //drawMapMarkers([{{ data | safe }}]);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -43,8 +41,7 @@
     }).addTo(mymap);
 
 
-    function getColor(d) {
-        switch_distrito(data, feature)    
+    function getColor(d) {   
         return d > 320  ? '#800026' :
             d > 270  ? '#BD0026' :
             d > 220  ? '#E31A1C' :
@@ -55,12 +52,6 @@
                         '#FFEDA0';
     }
 
-    function switch_distrito(data, feature)
-    {
-        //while()
-        console.log(data.DESC_DISTRITO[0])
-    }
-
     function style(feature) {
 		return {
 			weight: 2,
@@ -68,7 +59,6 @@
 			color: 'white',
 			dashArray: '3',
 			fillOpacity: 0.7,
-            //fillColor: getColor(feature.properties.N_Freguesi)
             fillColor: getColor(feature.properties.N_Freguesi)
 		};
     }
@@ -76,6 +66,29 @@
     var geojson = L.geoJson(distritoData, {
 		style: style,
 	}).addTo(mymap);
+
+    //highlight effect on mouse ouver
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
+
+    // on mouse out
+    function resetHighLight(e){
+        geojson.resetStyle(e.target);
+    }
+
+    
 
     
 

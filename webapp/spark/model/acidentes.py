@@ -18,7 +18,9 @@ logger = logging.getLogger(__name__)
 # 	countriesAndTerritories, geoId, 
 # 	countryterritoryCode, popData2018, continentExp
 #######################################################
-	
+
+#acidentes_data = 
+
 class AcidentesModel:
 	
 	def read_data(self, spark, filename):
