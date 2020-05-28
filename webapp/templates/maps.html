@@ -31,15 +31,31 @@
 </div>
 
 <script>
-    var mymap = L.map('mapid').setView([39.557191, -7.8536599], 7);
+    var mymap = L.map('mapid').setView([39.557191, -7.8536599], 6);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
         id: 'mapbox/light-v9',
-        accessToken: 'pk.eyJ1Ijoibm1zZmMiLCJhIjoiY2thbzJodHR3MGFoaDJybnljdzBjMGp5OCJ9.-oHCyTvi5R5F1ygtGFAH8w'
+        accessToken: 'pk.eyJ1Ijoibm1zZmMiLCJhIjoiY2thbzJodHR3MGFoaDJybnljdzBjMGp5OCJ9.-oHCyTvi5R5F1ygtGFAH8w',
     }).addTo(mymap);
 
+    // controlo para mostrar a informação do distrito
+    var info = L.control();
+
+    info.onAdd = function(mymap){
+        this._div = L.DomUtil.create('div', 'info');
+		this.update();
+		return this._div;
+    }
+
+    info.update = function (props){
+        this._div.innerHTML = '<h4>Nr de Freguesia por distrito em Portugal</h4>' +  (props ?
+			'<b>' + props.Distrito + '</b><br />' + props.N_Freguesi + ' freguesias'
+			: 'Passe por um Distrito');
+    }
+
+    info.addTo(mymap);
 
     function getColor(d) {   
         return d > 320  ? '#800026' :
@@ -63,37 +79,76 @@
 		};
     }
     
-    var geojson = L.geoJson(distritoData, {
-		style: style,
+    // On mouse ouver effect
+    function highlightFeature(e) {
+		var layer = e.target;
+
+		layer.setStyle({
+			weight: 5,
+			color: '#666',
+			dashArray: '',
+			fillOpacity: 0.7
+        });
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+			layer.bringToFront();
+		}
+
+        info.update(layer.feature.properties);
+    }
+
+
+    var geojson;
+
+    // On Mouse out
+    function resetHighlight(e) {
+		geojson.resetStyle(e.target);
+		info.update();
+	}
+
+    //zoom effect
+    function zoomToFeature(e) {
+		mymap.fitBounds(e.target.getBounds());
+    }
+    
+    // Add Functions
+    function onEachFeature(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlight,
+			click: zoomToFeature
+		});
+    }
+    
+    geojson = L.geoJson(distritoData, {
+        style: style,
+        onEachFeature: onEachFeature
 	}).addTo(mymap);
 
-    //highlight effect on mouse ouver
-    function highlightFeature(e) {
-        var layer = e.target;
+    //map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
-        layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
+    var legend = L.control({position: 'bottomright'});
 
-        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-            layer.bringToFront();
-        }
-    }
+	legend.onAdd = function (map) {
 
-    // on mouse out
-    function resetHighLight(e){
-        geojson.resetStyle(e.target);
-    }
+		var div = L.DomUtil.create('div', 'info legend'),
+			grades = [0, 20, 70, 120, 170, 220, 270, 320],
+			labels = [],
+			from, to;
 
-    
+		for (var i = 0; i < grades.length; i++) {
+			from = grades[i];
+			to = grades[i + 1];
 
-    
+			labels.push(
+				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				from + (to ? '&ndash;' + to : '+'));
+		}
 
-       
- 
+		div.innerHTML = labels.join('<br>');
+		return div;
+	};
+
+	legend.addTo(mymap);
 
 </script>
 
