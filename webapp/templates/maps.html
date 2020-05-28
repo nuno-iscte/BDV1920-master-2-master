@@ -32,6 +32,8 @@
 
 <script>
     var mymap = L.map('mapid').setView([39.557191, -7.8536599], 7);
+    
+    //drawMapMarkers([{{ data | safe }}]);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -42,14 +44,21 @@
 
 
     function getColor(d) {
-    return d > 320  ? '#800026' :
-           d > 270  ? '#BD0026' :
-           d > 220  ? '#E31A1C' :
-           d > 170  ? '#FC4E2A' :
-           d > 120  ? '#FD8D3C' :
-           d > 70   ? '#FEB24C' :
-           d > 20   ? '#FED976' :
-                      '#FFEDA0';
+        switch_distrito(data, feature)    
+        return d > 320  ? '#800026' :
+            d > 270  ? '#BD0026' :
+            d > 220  ? '#E31A1C' :
+            d > 170  ? '#FC4E2A' :
+            d > 120  ? '#FD8D3C' :
+            d > 70   ? '#FEB24C' :
+            d > 20   ? '#FED976' :
+                        '#FFEDA0';
+    }
+
+    function switch_distrito(data, feature)
+    {
+        //while()
+        console.log(data.DESC_DISTRITO[0])
     }
 
     function style(feature) {
@@ -59,7 +68,8 @@
 			color: 'white',
 			dashArray: '3',
 			fillOpacity: 0.7,
-			fillColor: getColor(feature.properties.N_Freguesi)
+            //fillColor: getColor(feature.properties.N_Freguesi)
+            fillColor: getColor(feature.properties.N_Freguesi)
 		};
     }
     
@@ -68,6 +78,9 @@
 	}).addTo(mymap);
 
     
+
+       
+ 
 
 </script>
 

@@ -33,7 +33,7 @@ function onMapClick(e) {
         .setContent("You clicked at " + e.latlng.toString())
         .openOn(mymap);
  }
-
+console.log(data)
 mymap.on('click', onMapClick);
 
 // the markers
