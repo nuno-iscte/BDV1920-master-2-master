@@ -39,7 +39,7 @@ def maps():
 	model = AcidentesModel(spark, datasource)
 	listing = {}
 	listing = model.get_NAcidentes_p_Distrito(spark)
-	logger.info(listing)
+	# logger.info(listing)
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
