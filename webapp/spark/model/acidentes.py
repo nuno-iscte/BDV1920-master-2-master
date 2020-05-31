@@ -8,6 +8,7 @@ from pyspark.sql.types import *
 import pandas
 import json
 import logging
+import datetime
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -74,7 +75,14 @@ class AcidentesModel:
 		listing = df.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
+	
+	def get_NASemanas_p_Distrito(self, spark):
 
+		df = spark.sql("SELECT COUNT(ID_ACIDENTE) AS N_Acidentes, DESC_DISTRITO, \
+			MES_LABEL FROM acidentes GROUP BY DESC_DISTRITO, MES_LABEL")
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
 
 	# more processing ... as needed
 	

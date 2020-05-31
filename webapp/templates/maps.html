@@ -33,8 +33,14 @@
 <script>
     var mymap = L.map('mapid').setView([39.557191, -7.8536599], 6);
 
+    //data <- Numero de acidentes agrupados por distrito
     var data = [{{ data | safe }}];
+    // console.log(data)
 
+    //semanas <- Numero de acidentes agrupados por semana e distrito
+    var semanas = [{{ semanas | safe }}];
+
+ 
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -53,8 +59,8 @@
     }
 
     info.update = function (props){
-        this._div.innerHTML = '<h4>Nr de Freguesia por distrito em Portugal</h4>' +  (props ?
-			'<b>' + props.Distrito + '</b><br />' + props.N_Freguesi + ' freguesias'
+        this._div.innerHTML = 'Nr de acidentes por distrito em Portugal' +  (props ?
+			'<b>' + props.Distrito + '</b><br />' + validate(props.Distrito) + ' acidentes'
 			: 'Passe por um Distrito');
     }
 
@@ -80,13 +86,13 @@
 
     function getColor(d, desc) {  
         d = validate(desc) 
-        return d > 3000  ? '#800026' :
-            d > 2000  ? '#BD0026' :
-            d > 1000  ? '#E31A1C' :
-            d > 500  ? '#FC4E2A' :
-            d > 250  ? '#FD8D3C' :
-            d > 100   ? '#FEB24C' :
-            d > 20   ? '#FED976' :
+        return d > 1500  ? '#800026' :
+            d > 1000  ? '#BD0026' :
+            d > 500  ? '#E31A1C' :
+            d > 250  ? '#FC4E2A' :
+            d > 125  ? '#FD8D3C' :
+            d > 50   ? '#FEB24C' :
+            d > 1   ? '#FED976' :
                         '#FFEDA0';
     }
 
