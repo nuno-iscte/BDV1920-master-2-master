@@ -11,7 +11,7 @@
 </style>-->
 
 <style>
-    #mapid { width: 450px; height: 700px; }
+    #mapid { width: 100%; height: 700px; }
 .info { 
     padding: 6px 8px; 
     font: 14px/16px Arial, Helvetica, sans-serif; 
@@ -43,14 +43,23 @@
     <div class="row">
         <div class="col-md-4">
             <div id="mapid"></div>
+            <button class="btn btn-outline-secondary" onclick="resetMap()">Reset Map</button>
         </div>
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
-                    graph
+                    <div id="my_dataviz"></div>
                 </div>
                 <div class="col-md-6">
-                    graph
+                    Time of Day
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    Weather
+                </div>
+                <div class="col-md-6">
+                    Road Conditions
                 </div>
             </div>
         </div>
@@ -58,7 +67,7 @@
 </div>
 
 <script>
-    var mymap = L.map('mapid').setView([39.557191, -7.8536599], 7);
+    var mymap = L.map('mapid').setView([39.697191, -7.6536599], 7);
 
     //data <- Numero de acidentes agrupados por distrito
     var data = [{{ data | safe }}];
@@ -68,6 +77,9 @@
     var semanas = [{{ semanas | safe }}];
 
  
+    function resetMap(){
+        mymap.setView([39.697191, -7.6536599], 7);
+    }
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -86,9 +98,9 @@
     }
 
     info.update = function (props){
-        this._div.innerHTML = '<h4>Acidentes por distrito</h4>' +  (props ? '<b>' + 
-            props.Distrito + '</b><br />' + validate(props.Distrito) + ' acidentes'
-			: 'Passe por um Distrito');
+        this._div.innerHTML = '<h4>Crashes by District</h4>' +  (props ? '<b>' + 
+            props.Distrito + '</b><br />' + validate(props.Distrito) + ' crashes'
+			: 'Hover over a disctrict');
     };
     info.addTo(mymap);
 
@@ -110,24 +122,24 @@
         return total_acidentes
     }
 
-    function getColor(d, desc) {  
-        d = validate(desc) 
-        return d > 1500  ? '#800026' :
-            d > 1000  ? '#BD0026' :
-            d > 500  ? '#E31A1C' :
-            d > 250  ? '#FC4E2A' :
-            d > 125  ? '#FD8D3C' :
-            d > 50   ? '#FEB24C' :
+    function getColor(d) {  
+        d = validate(d) 
+        return d > 3000  ? '#800026' :
+            d > 1500  ? '#BD0026' :
+            d > 750  ? '#E31A1C' :
+            d > 500  ? '#FC4E2A' :
+            d > 250  ? '#FD8D3C' :
+            d > 100  ? '#FEB24C' :
             d > 1   ? '#FED976' :
                         '#FFEDA0';
     }
     function getColor2(d) {   
-        return d > 1500  ? '#800026' :
-            d > 1000  ? '#BD0026' :
-            d > 500  ? '#E31A1C' :
-            d > 250  ? '#FC4E2A' :
-            d > 125  ? '#FD8D3C' :
-            d > 50   ? '#FEB24C' :
+        return d > 3500  ? '#800026' :
+            d > 1500  ? '#BD0026' :
+            d > 750  ? '#E31A1C' :
+            d > 500  ? '#FC4E2A' :
+            d > 250  ? '#FD8D3C' :
+            d > 100  ? '#FEB24C' :
             d > 1   ? '#FED976' :
                         '#FFEDA0';
     }
@@ -139,7 +151,7 @@
 			color: 'white',
 			dashArray: '3',
 			fillOpacity: 0.7,
-            fillColor: getColor(feature.properties.N_Freguesi, feature.properties.Distrito)
+            fillColor: getColor(feature.properties.Distrito)
 		};
     }
     
@@ -195,7 +207,7 @@
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [1, 50, 125, 250, 500, 1000, 1500],
+			grades = [1, 100, 250, 500, 750, 1500, 3000],
 			labels = [],
 			from, to;
 
@@ -214,6 +226,14 @@
 
 	legend.addTo(mymap);
 
+</script>
+<!-- for D3 visualization -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<script src="{{ url_for('static', filename='js/weather.js') }}"></script>
+
+<script>
+    drawData({{ data | safe }});
 </script>
 
 {% endblock %}
