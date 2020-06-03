@@ -3,13 +3,40 @@
 {% block content %}
 
 <script src="{{ url_for('static', filename='js/distrito.js') }}"></script>
-<style>
+<!--<style>
     #mapid { 
         height: 700px; 
-        width: 300px
+        width: 350px
         }
-</style>
+</style>-->
 
+<style>
+    #mapid { width: 450px; height: 700px; }
+.info { 
+    padding: 6px 8px; 
+    font: 14px/16px Arial, Helvetica, sans-serif; 
+    background: white; 
+    background: rgba(255,255,255,0.8); 
+    box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+    border-radius: 5px; 
+    } 
+.info h4 { 
+    margin: 0 0 5px; 
+    color: #777; 
+}
+.legend { 
+    text-align: left; 
+    line-height: 18px; 
+    color: #555; 
+} 
+.legend i { 
+    width: 18px; 
+    height: 18px; 
+    float: left; 
+    margin-right: 8px; 
+    opacity: 0.7; 
+}
+</style>
 
 
 <div class="container">
@@ -59,11 +86,10 @@
     }
 
     info.update = function (props){
-        this._div.innerHTML = 'Nr de acidentes por distrito em Portugal' +  (props ?
-			'<b>' + props.Distrito + '</b><br />' + validate(props.Distrito) + ' acidentes'
+        this._div.innerHTML = '<h4>Acidentes por distrito</h4>' +  (props ? '<b>' + 
+            props.Distrito + '</b><br />' + validate(props.Distrito) + ' acidentes'
 			: 'Passe por um Distrito');
-    }
-
+    };
     info.addTo(mymap);
 
     var i = 0
@@ -86,6 +112,16 @@
 
     function getColor(d, desc) {  
         d = validate(desc) 
+        return d > 1500  ? '#800026' :
+            d > 1000  ? '#BD0026' :
+            d > 500  ? '#E31A1C' :
+            d > 250  ? '#FC4E2A' :
+            d > 125  ? '#FD8D3C' :
+            d > 50   ? '#FEB24C' :
+            d > 1   ? '#FED976' :
+                        '#FFEDA0';
+    }
+    function getColor2(d) {   
         return d > 1500  ? '#800026' :
             d > 1000  ? '#BD0026' :
             d > 500  ? '#E31A1C' :
@@ -159,7 +195,7 @@
 	legend.onAdd = function (map) {
 
 		var div = L.DomUtil.create('div', 'info legend'),
-			grades = [0, 20, 70, 120, 170, 220, 270, 320],
+			grades = [1, 50, 125, 250, 500, 1000, 1500],
 			labels = [],
 			from, to;
 
@@ -168,7 +204,7 @@
 			to = grades[i + 1];
 
 			labels.push(
-				'<i style="background:' + getColor(from + 1) + '"></i> ' +
+				'<i style="background:' + getColor2(from + 1) + '"></i> ' +
 				from + (to ? '&ndash;' + to : '+'));
 		}
 
