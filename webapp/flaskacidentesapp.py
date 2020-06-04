@@ -48,7 +48,24 @@ def maps():
 							template='maps-template'
 						)
 
-   
+
+@app.route('/stats', methods=['GET'])
+def stats():
+	# create model
+	logger.info(" ROUTE: STATS")
+	global spark, datasource, model
+	model = AcidentesModel(spark, datasource)
+	listing = {}
+	listing = model.get_NAcidentes_p_Distrito(spark)
+	tipo_acidente = model.get_TipoAcidente_p_Distrito(spark)
+	logger.info(listing)
+	return render_template('stats.html',
+							title = myTitle,
+							data=listing,
+							tipo_acidente = tipo_acidente,
+							template='stats-template'
+						)
+
 # run the app
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 8080))

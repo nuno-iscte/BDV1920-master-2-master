@@ -30,23 +30,49 @@ function updateData(data){
   // Add axis 
   var x = d3.scaleBand()
     .range([ 0, width ])
+    .domain(data.map(function(d) { return d.DESC_DISTRITO; }))
     .padding(0.2);
   xAxis = svg.append("g")
     .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    .selectAll("text") 
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
     
 
   // Add Y axis
   var y = d3.scaleLinear()
+    .domain(d3.extent(data, function(d) { return d.N_Acidentes; }))
     .range([ height, 0 ])
   yAxis = svg.append("g")
-    
+    .attr("class", "myYaxis")
+    .call(d3.axisLeft(y));
   
-  
-  function updateSelectedDistrict(data){
+
+    svg.append('text')
+    .attr('x', (width / 2))
+    .attr("y", 0 - (margin.top - 20))
+    .attr("text-anchor", "middle")  
+    .style("font-size", "16px") 
+    .style("text-decoration", "underline")  
+    .style("fill", "black")
+    .text("Vehicle Type");
+
+    svg.selectAll("mybar")
+    .data(data)
+    .enter()
+    .append("rect")
+      .attr("x", function(d) { return x(d.DESC_DISTRITO); })
+      .attr("y", function(d) { return y(d.N_Acidentes); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.N_Acidentes); })
+      .attr("fill", "#FEB24C")
+
+  /*  
+  function update(data){
     x.domain(data.map(function(d) { return d.DESC_DISTRITO; }))
-    x.selectAll("text")
-    x.attr("transform", "translate(-10,0)rotate(-45)")
-    x.style("text-anchor", "end");
+  //    .attr("transform", "translate(-10,0)rotate(-45)")
+  //    .style("text-anchor", "end");
     xAxis.transition().duration(1000).call(d3.axisBottom(x))
     
     y.domain(d3.extent(data, function(d) { return d.N_Acidentes; }))
@@ -55,13 +81,16 @@ function updateData(data){
     var u = svg.selectAll("rect")
       .data(data)
 
-      u.enter()
+      u
+      .enter()
       .append("rect")
-      .attr("x", function(d) { return x(d.DESC_DISTRITO); })
-          .attr("y", function(d) { return y(d.N_Acidentes); })
-          .attr("width", x.bandwidth())
-          .attr("height", function(d) { return height - y(d.N_Acidentes); })
-          .attr("fill", "#69b3a2")
+      .merge(u)
+      .duration(1000)
+        .attr("x", function(d) { return x(d.DESC_DISTRITO); })
+        .attr("y", function(d) { return y(d.N_Acidentes); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.N_Acidentes); })
+        .attr("fill", "#69b3a2")
   }
 
 
@@ -74,7 +103,7 @@ function updateData(data){
     .style("fill", "black")
     .text("Vehicle Type");
 
-   updateSelectedDistrict(data);
+   update(data);
 
-  
+ */ 
 }
