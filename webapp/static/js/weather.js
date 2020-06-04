@@ -27,26 +27,44 @@ function drawData(data){
 function updateData(data){
   console.log(data);
 
-  // Add Y axis 
+  // Add axis 
   var x = d3.scaleBand()
-    .domain(data.map(function(d) { return d.DESC_DISTRITO; }))
     .range([ 0, width ])
     .padding(0.2);
   xAxis = svg.append("g")
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
+    
 
   // Add Y axis
   var y = d3.scaleLinear()
-    .domain(d3.extent(data, function(d) { return d.N_Acidentes; }))
     .range([ height, 0 ])
   yAxis = svg.append("g")
-    .call(d3.axisLeft(y));
+    
   
   
+  function updateSelectedDistrict(data){
+    x.domain(data.map(function(d) { return d.DESC_DISTRITO; }))
+    x.selectAll("text")
+    x.attr("transform", "translate(-10,0)rotate(-45)")
+    x.style("text-anchor", "end");
+    xAxis.transition().duration(1000).call(d3.axisBottom(x))
+    
+    y.domain(d3.extent(data, function(d) { return d.N_Acidentes; }))
+    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+    var u = svg.selectAll("rect")
+      .data(data)
+
+      u.enter()
+      .append("rect")
+      .attr("x", function(d) { return x(d.DESC_DISTRITO); })
+          .attr("y", function(d) { return y(d.N_Acidentes); })
+          .attr("width", x.bandwidth())
+          .attr("height", function(d) { return height - y(d.N_Acidentes); })
+          .attr("fill", "#69b3a2")
+  }
+
+
   svg.append('text')
     .attr('x', (width / 2))
     .attr("y", 0 - (margin.top - 20))
@@ -56,14 +74,7 @@ function updateData(data){
     .style("fill", "black")
     .text("Vehicle Type");
 
-    //Bars
-  svg.selectAll("myRect")
-  .data(data)
-  .enter()
-  .append("rect")
-  .attr("x", function(d) { return x(d.DESC_DISTRITO); })
-      .attr("y", function(d) { return y(d.N_Acidentes); })
-      .attr("width", x.bandwidth())
-      .attr("height", function(d) { return height - y(d.N_Acidentes); })
-      .attr("fill", "#69b3a2")
+   updateSelectedDistrict(data);
+
+  
 }
