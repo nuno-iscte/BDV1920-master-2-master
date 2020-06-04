@@ -79,7 +79,7 @@ class AcidentesModel:
 	def get_TipoAcidente_p_Distrito(self, spark):
 
 		df1 = spark.sql("SELECT COUNT(ID_ACIDENTE) AS N_Acidentes, DESC_DISTRITO, Tipo_Natureza FROM acidentes GROUP BY DESC_DISTRITO, Tipo_Natureza")
-		listing = df.toPandas().to_dict(orient='records') 
+		listing = df1.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
 
