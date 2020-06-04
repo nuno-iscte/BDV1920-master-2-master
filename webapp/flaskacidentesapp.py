@@ -39,12 +39,12 @@ def maps():
 	model = AcidentesModel(spark, datasource)
 	listing = {}
 	listing = model.get_NAcidentes_p_Distrito(spark)
-	semanas = model.get_NASemanas_p_Distrito(spark)
-	# logger.info(listing)
+	tipo_acidente = model.get_TipoAcidente_p_Distrito(spark)
+	logger.info(listing)
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
-							semanas = semanas,
+							tipo_acidente = tipo_acidente,
 							template='maps-template'
 						)
 

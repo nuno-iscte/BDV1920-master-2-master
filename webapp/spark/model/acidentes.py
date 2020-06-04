@@ -48,7 +48,7 @@ class AcidentesModel:
 		
 		# process dataframe then store outcome as a SQL table
 		# (further processing, if wanted)
-		self.acidentes = self.rawacidentes.drop("Hora")
+		self.acidentes = self.rawacidentes.drop("COD_FACTOR_ATMOSFERICO")
 		# self.covid19.cache
 		# register dataframes as a SQL temporary view
 		self.acidentes.createOrReplaceTempView("acidentes")
@@ -76,10 +76,9 @@ class AcidentesModel:
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
 	
-	def get_NASemanas_p_Distrito(self, spark):
+	def get_TipoAcidente_p_Distrito(self, spark):
 
-		df = spark.sql("SELECT COUNT(ID_ACIDENTE) AS N_Acidentes, DESC_DISTRITO, \
-			MES_LABEL FROM acidentes GROUP BY DESC_DISTRITO, MES_LABEL")
+		df1 = spark.sql("SELECT COUNT(ID_ACIDENTE) AS N_Acidentes, DESC_DISTRITO, Tipo_Natureza FROM acidentes GROUP BY DESC_DISTRITO, Tipo_Natureza")
 		listing = df.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
