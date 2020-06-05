@@ -86,9 +86,6 @@
     var crossfilter = [{{ crossfilter | safe }}];
     // console.log(data)
 
-    //semanas <- Numero de acidentes agrupados por semana e distrito
-    var semanas = [{{ semanas | safe }}];
-
     var mergeJSON = function (target, add) {
         function isObject(obj) {
             if (typeof obj == "object") {
@@ -104,6 +101,7 @@
             if (add.hasOwnProperty(key)) {
                 if (target[key] && isObject(target[key]) && isObject(add[key])) {
                     this.mergeJSON(target[key], add[key]);
+                    //console.log(target[key])
                 } else {
                     target[key] = add[key];
                 }
@@ -116,11 +114,11 @@
     data = mergeJSON(data, rain);
     data = mergeJSON(data, fog);
     data = mergeJSON(data, sun);
-    data = mergeJSON(data, hail);
-    data = mergeJSON(data, nao_def);
-    data = mergeJSON(data, snow);
-    data = mergeJSON(data, cloudofsmoke);
-    data = mergeJSON(data, wind_c);
+    //data = mergeJSON(data, hail); //REBENTA
+    //data = mergeJSON(data, nao_def);
+    //data = mergeJSON(data, snow);
+    //data = mergeJSON(data, cloudofsmoke);
+    //data = mergeJSON(data, wind_c);
     console.log(data)
     
     console.log(crossfilter)
