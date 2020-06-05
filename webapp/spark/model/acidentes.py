@@ -144,7 +144,7 @@ class AcidentesModel:
 		df = spark.sql("SELECT CONCAT(SUBSTR(DATA,4,2), SUBSTRING_INDEX(DATA, '/', 1), SUBSTR(Hora,1,2),SUBSTR(Hora,4,2) ) as DataAcidente, \
 			QT_MORTOS, QT_FGRAVES, QT_FLIGEIROS, \
 				 Tipo_Natureza as T_natureza, FACTOR_ATMOSFERICO as F_Atmosferico, GRAVIDADE FROM acidentes")	
-		result_dict = df.toPandas().to_dict(orient='records')
+		result_dict = df.toPandas().to_dict(orient='index')
 		list_pt = [v for v in result_dict.values()]
 		listing = list_pt
 		jsonlisting = json.dumps(listing, indent=2)
