@@ -130,19 +130,21 @@
 <script src="http://square.github.io/crossfilter/crossfilter.v1.min.js"></script>
 <script src="https://d3js.org/d3.v3.min.js"></script>
 
-<script>
-  var data = [{{  data | safe }}];
-</script>
+
 
 <script>
+
+    
 
     // (It's CSV, but GitHub Pages only gzip's JSON at the moment.)
-    d3.csv("http://square.github.io/crossfilter/flights-3m.json", function(error, flights) {
-    //function drawData(data){
+    //d3.csv("http://square.github.io/crossfilter/flights-3m.json", function(error, flights) {
+    function drawData(data){
       console.log(data);
-      data = d3.entries(data);
-      console.log(data)
+      //data = d3.entries(data);
+      //console.log(data)
+    
 
+    
       // Various formatters.
       var formatNumber = d3.format(",d"),
           formatChange = d3.format("+,d"),
@@ -154,15 +156,17 @@
           .key(function(d) { return d3.time.day(d.date); });
     
       // A little coercion, since the CSV is untyped.
-      flights.forEach(function(d, i) {
+      data.forEach(function(d, i) {
+        console.log(d[i].DataAcidente);
         d.index = i;
-        d.date = parseDate(d.date);
-        d.delay = +d.delay;
-        d.distance = +d.distance;
+        d.date = parseDate(d[i].DataAcidente);
+        d.delay = +d[i].QT_MORTOS;
+        d.distance = +d[i].QT_FGRAVES;
+        
       });
     
       // Create the crossfilter for the relevant dimensions and groups.
-      var flight = crossfilter(flights),
+      var flight = crossfilter(data),
           all = flight.groupAll(),
           date = flight.dimension(function(d) { return d.date; }),
           dates = date.group(d3.time.day),
@@ -238,7 +242,7 @@
     
       // Like d3.time.format, but faster.
       function parseDate(d) {
-        return new Date(2001,
+        return new Date(2018,
             d.substring(0, 2) - 1,
             d.substring(2, 4),
             d.substring(4, 6),
@@ -300,9 +304,12 @@
           flight.exit().remove();
     
           flight.order();
+
+          console.log(flight)
         });
       }
-    
+      
+
       function barChart() {
         if (!barChart.id) barChart.id = 0;
     
@@ -494,8 +501,12 @@
     
         return d3.rebind(chart, brush, "on");
       }
-    });
+    };
     
+    </script>
+
+    <script>
+      drawData ([{{  data | safe }}]);
     </script>
 
 
