@@ -83,6 +83,63 @@ class AcidentesModel:
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
 
+			
+	def get_pD_Rain(self, spark):
+		df1 = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Rain, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Chuva' GROUP BY DESC_DISTRITO")	
+		df1 = df1.toPandas().to_dict(orient='records') 
+		df1 = json.dumps(df1, indent=2)
+		return df1
+
+	def get_pD_Fog(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Fog, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Nevoeiro' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
+	def get_pD_Sun(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Sun, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Bom tempo' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
+	def get_pD_Hail(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Hail, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Granizo' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
+	def get_pD_NA(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS ConditionNotDefined, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'NÃO DEFINIDO' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
+	def get_pD_Snow(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Snow, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Neve' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
+	def get_pD_CloudofSmoke(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS CloudOfSmoke, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Nuvem de fumo' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+	
+	def get_pD_Windy(self, spark):
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Windy, DESC_DISTRITO FROM acidentes \
+			Where FACTOR_ATMOSFERICO = 'Vento Forte' GROUP BY DESC_DISTRITO")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
+
 	# more processing ... as needed
 	
 	# more getters ... as needed

@@ -39,33 +39,27 @@ def maps():
 	model = AcidentesModel(spark, datasource)
 	listing = {}
 	listing = model.get_NAcidentes_p_Distrito(spark)
-	tipo_acidente = model.get_TipoAcidente_p_Distrito(spark)
-	logger.info(listing)
+	rain = model.get_pD_Rain(spark)
+	fog = model.get_pD_Fog(spark)
+	sun = model.get_pD_Sun(spark)
+	hail = model.get_pD_Hail(spark)
+	nao_def = model.get_pD_NA(spark)
+	snow = model.get_pD_Snow(spark)
+	cloudofsmoke = model.get_pD_CloudofSmoke(spark)
+	wind_c = model.get_pD_Windy(spark)
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
-							tipo_acidente = tipo_acidente,
+							rain = rain,
+							fog = fog,
+							sun = sun,
+							hail = hail,
+							nao_def = nao_def,
+							snow = snow,
+							cloudofsmoke = cloudofsmoke,
+							wind_c = wind_c,
 							template='maps-template'
 						)
-
-
-@app.route('/stats', methods=['GET'])
-def stats():
-	# create model
-	logger.info(" ROUTE: STATS")
-	global spark, datasource, model
-	model = AcidentesModel(spark, datasource)
-	listing = {}
-	listing = model.get_NAcidentes_p_Distrito(spark)
-	tipo_acidente = model.get_TipoAcidente_p_Distrito(spark)
-	logger.info(listing)
-	return render_template('stats.html',
-							title = myTitle,
-							data=listing,
-							tipo_acidente = tipo_acidente,
-							template='stats-template'
-						)
-
 # run the app
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 8080))

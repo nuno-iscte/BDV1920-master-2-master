@@ -75,11 +75,52 @@
 
     //data <- Numero de acidentes agrupados por distrito
     var data = [{{ data | safe }}];
+    var rain = [{{ rain | safe }}];
+    var fog = [{{ fog | safe }}];
+    var sun = [{{ sun | safe }}];
+    var hail = [{{ hail | safe }}];
+    var nao_def = [{{ nao_def | safe }}];
+    var snow = [{{ snow | safe }}];
+    var cloudofsmoke = [{{ cloudofsmoke | safe }}];
+    var wind_c = [{{ wind_c | safe }}];
     // console.log(data)
 
     //semanas <- Numero de acidentes agrupados por semana e distrito
     var semanas = [{{ semanas | safe }}];
 
+    var mergeJSON = function (target, add) {
+        function isObject(obj) {
+            if (typeof obj == "object") {
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        return true; // search for first object prop
+                    }
+                }
+            }
+            return false;
+        }
+        for (var key in add) {
+            if (add.hasOwnProperty(key)) {
+                if (target[key] && isObject(target[key]) && isObject(add[key])) {
+                    this.mergeJSON(target[key], add[key]);
+                } else {
+                    target[key] = add[key];
+                }
+            }
+        }
+        return target;
+    };
+
+
+    data = mergeJSON(data, rain);
+    data = mergeJSON(data, fog);
+    data = mergeJSON(data, sun);
+    data = mergeJSON(data, hail);
+    data = mergeJSON(data, nao_def);
+    data = mergeJSON(data, snow);
+    data = mergeJSON(data, cloudofsmoke);
+    data = mergeJSON(data, wind_c);
+	console.log(data)
  
     function resetMap(){
         mymap.setView([39.697191, -7.6536599], 7);
