@@ -47,7 +47,8 @@ def maps():
 	snow = model.get_pD_Snow(spark)
 	cloudofsmoke = model.get_pD_CloudofSmoke(spark)
 	wind_c = model.get_pD_Windy(spark)
-	
+	crossfilter = model.get_crossfilter(spark)
+	logger.info(listing)
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,

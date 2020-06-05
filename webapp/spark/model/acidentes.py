@@ -71,7 +71,7 @@ class AcidentesModel:
 
 	def get_NAcidentes_p_Distrito(self, spark):
 
-		df = spark.sql("SELECT COUNT(ID_ACIDENTE) AS N_Acidentes, DESC_DISTRITO FROM acidentes GROUP BY DESC_DISTRITO")
+		df = spark.sql("SELECT DESC_DISTRITO, COUNT(ID_ACIDENTE) AS N_Acidentes FROM acidentes GROUP BY DESC_DISTRITO")
 		listing = df.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
@@ -106,7 +106,7 @@ class AcidentesModel:
 		return jsonlisting
 
 	def get_pD_Hail(self, spark):
-		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Hail, DESC_DISTRITO FROM acidentes \
+		df = spark.sql("SELECT COUNT(FACTOR_ATMOSFERICO) AS Hail,  DESC_DISTRITO FROM acidentes \
 			Where FACTOR_ATMOSFERICO = 'Granizo' GROUP BY DESC_DISTRITO")	
 		listing = df.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
