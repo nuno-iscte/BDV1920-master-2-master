@@ -41,10 +41,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <div id="mapid"></div>
             <button class="btn btn-outline-secondary" onclick="resetMap()">Reset Map</button>
         </div>
+        <!--
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
@@ -67,6 +68,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </div>
 
@@ -123,7 +125,7 @@
     data = mergeJSON(data, wind_c);
     console.log(data)
     
-    console.log(crossfilter)
+    //console.log(crossfilter)
  
     function resetMap(){
         mymap.setView([39.697191, -7.6536599], 7);

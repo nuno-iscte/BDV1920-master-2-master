@@ -131,10 +131,15 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 
 <script>
+  var data = [{{  data | safe }}];
+</script>
+
+<script>
 
     // (It's CSV, but GitHub Pages only gzip's JSON at the moment.)
     d3.csv("http://square.github.io/crossfilter/flights-3m.json", function(error, flights) {
-    
+      data = d3.entries(data);
+      console.log(data)
       // Various formatters.
       var formatNumber = d3.format(",d"),
           formatChange = d3.format("+,d"),

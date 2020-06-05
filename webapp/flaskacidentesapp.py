@@ -47,7 +47,7 @@ def maps():
 	snow = model.get_pD_Snow(spark)
 	cloudofsmoke = model.get_pD_CloudofSmoke(spark)
 	wind_c = model.get_pD_Windy(spark)
-	crossfilter = model.get_crossfilter(spark)
+	
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
@@ -59,9 +59,22 @@ def maps():
 							snow = snow,
 							cloudofsmoke = cloudofsmoke,
 							wind_c = wind_c,
-							crossfilter = crossfilter,
+							
 							template='maps-template'
 						)
+
+@app.route('/stats', methods=['GET'])
+def stats():
+	logger.info(" ROUTE: / => STATS")
+	global spark, datasource, model
+	model = AcidentesModel(spark, datasource)
+	crossfilter = model.get_crossfilter(spark)
+	return render_template('stats.html',
+							title = myTitle,
+							data = crossfilter,
+							template='stats-template'
+						)
+
 # run the app
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 8080))
