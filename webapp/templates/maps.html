@@ -83,6 +83,7 @@
     var snow = [{{ snow | safe }}];
     var cloudofsmoke = [{{ cloudofsmoke | safe }}];
     var wind_c = [{{ wind_c | safe }}];
+    var crossfilter = [{{ crossfilter | safe }}];
     // console.log(data)
 
     //semanas <- Numero de acidentes agrupados por semana e distrito
@@ -120,7 +121,9 @@
     data = mergeJSON(data, snow);
     data = mergeJSON(data, cloudofsmoke);
     data = mergeJSON(data, wind_c);
-	console.log(data)
+    console.log(data)
+    
+    console.log(crossfilter)
  
     function resetMap(){
         mymap.setView([39.697191, -7.6536599], 7);

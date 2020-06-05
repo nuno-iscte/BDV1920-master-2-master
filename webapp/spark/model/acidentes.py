@@ -139,6 +139,13 @@ class AcidentesModel:
 		listing = df.toPandas().to_dict(orient='records') 
 		jsonlisting = json.dumps(listing, indent=2)
 		return jsonlisting
+	
+	def get_crossfilter(self, spark):
+		df = spark.sql("SELECT CONCAT(SUBSTR(DATA,3,2), SUBSTRING_INDEX(DATA, '/', 1), SUBSTR(Hora,1,2),SUBSTR(Hora,4,2) ) as DataAcidente, \
+			Tipo_Natureza as T_natureza, FACTOR_ATMOSFERICO as F_Atmosferico, GRAVIDADE FROM acidentes")	
+		listing = df.toPandas().to_dict(orient='records') 
+		jsonlisting = json.dumps(listing, indent=2)
+		return jsonlisting
 
 	# more processing ... as needed
 	

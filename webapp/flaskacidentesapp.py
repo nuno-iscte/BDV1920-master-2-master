@@ -47,6 +47,7 @@ def maps():
 	snow = model.get_pD_Snow(spark)
 	cloudofsmoke = model.get_pD_CloudofSmoke(spark)
 	wind_c = model.get_pD_Windy(spark)
+	crossfilter = model.get_crossfilter(spark)
 	return render_template('maps.html',
 							title = myTitle,
 							data=listing,
@@ -58,6 +59,7 @@ def maps():
 							snow = snow,
 							cloudofsmoke = cloudofsmoke,
 							wind_c = wind_c,
+							crossfilter = crossfilter,
 							template='maps-template'
 						)
 # run the app
