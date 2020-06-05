@@ -106,7 +106,21 @@
     
 
 <div class="container">
+  <div class="col-sm-6" id="filtering_id">
+    <h5>Data to visualize</h5>
+    <div class="container">
+        <div class="input-group mb-3">
+            <select class="custom-select" id="selectButton">
+            </select>
+            <div class="input-group-append">
+            <label class="input-group-text" for="selectButton">Country</label>
+            </div>
+        </div>
+    </div>
+  </div>
     <div class="row">
+      <div id="vis1_id"></div>
+      <!--
         <div id="charts">
             <div id="hour-chart" class="chart">
                 <div class="title">Time of Day</div>
@@ -120,15 +134,18 @@
             <div id="date-chart" class="chart">
                 <div class="title">Date</div>
             </div>
+          
         </div>
+      
         <aside id="totals"><span id="active">-</span> of <span id="total">-</span> flights selected.</aside>
+      -->
     </div>
 </div>
 
 
 
-<script src="http://square.github.io/crossfilter/crossfilter.v1.min.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
+<!--script src="http://square.github.io/crossfilter/crossfilter.v1.min.js"></script>-->
+<!--<script src="https://d3js.org/d3.v3.min.js"></script>
 
 
 
@@ -176,7 +193,7 @@
           delays = delay.group(function(d) { return Math.floor(d / 10) * 10; }),
           distance = flight.dimension(function(d) { return Math.min(1999, d.distance); }),
           distances = distance.group(function(d) { return Math.floor(d / 50) * 50; });
-    
+      console.log('Hour: ', hour)
       var charts = [
     
         barChart()
@@ -305,7 +322,7 @@
     
           flight.order();
 
-          // console.log(flight)
+           console.log('Flights: ',flight)
         });
       }
       
@@ -504,6 +521,13 @@
     };
     
     </script>
+  -->
+
+  <!-- for D3 visualization -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<script src="{{ url_for('static', filename='js/stats.js') }}"></script>
+
 
     <script>
       drawData ([{{  data | safe }}]);
